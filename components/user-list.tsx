@@ -3,7 +3,7 @@ import type { User } from "@/lib/drizzle";
 import Image from "next/image";
 import { deleteUser, getUsers } from "./actions";
 import { useTransition } from "react";
-import { timeAgo } from "@/lib/utils";
+import { useTimeAgo } from "@/lib/utils";
 import { Trash2 } from "lucide-react";
 import useSWR from "swr";
 import { usersKey } from "./const";
@@ -13,6 +13,7 @@ export function UserList({ users }: { users: User[] }) {
 	const swr = useSWR(usersKey, () => getUsers(), {
 		fallbackData: { users, duration: 0 },
 	});
+	const timeAgo = useTimeAgo();
 
 	return (
 		<div className="divide-y divide-gray-900/5">
