@@ -17,7 +17,7 @@ export function UserList({ users }: { users: User[] }) {
 
 	return (
 		<div className="divide-y divide-gray-900/5">
-			{swr.data?.users.map((user) => (
+			{users.map((user) => (
 				<div key={user.name} className="flex items-center justify-between py-3">
 					<div className="flex items-center space-x-4">
 						<Image

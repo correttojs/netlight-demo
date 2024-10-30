@@ -8,6 +8,7 @@ import {
 	revalidateTag,
 } from "next/cache";
 import { usersKey } from "./const";
+import { cache } from "react";
 
 export async function createUser(_: unknown, formData: FormData) {
 	try {
@@ -36,10 +37,11 @@ export async function deleteUser(id: number) {
 	console.log(res);
 }
 
-export async function getUsers() {
-	"use cache";
+export const getUsers = cache(async () => {
+	// "use cache";
 	// cacheLife("days");
-	cacheTag(usersKey);
+	// cacheTag(usersKey);
+	console.log("getUsers");
 	const startTime = performance.now();
 	const users = await db.select().from(UsersTable);
 	await new Promise((resolve) => setTimeout(resolve, 500));
@@ -48,4 +50,4 @@ export async function getUsers() {
 		users,
 		duration,
 	};
-}
+});

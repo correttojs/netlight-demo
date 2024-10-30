@@ -2,6 +2,7 @@ import RefreshButton from "./refresh-button";
 import { CreateUserForm } from "./add-user";
 import { getUsers } from "./actions";
 import { UserList } from "./user-list";
+import { UserCounter } from "./users-counter";
 
 export default async function Table() {
 	const { users, duration } = await getUsers();
@@ -17,6 +18,7 @@ export default async function Table() {
 				</div>
 				<RefreshButton />
 			</div>
+			<UserCounter />
 			<div className="flex flex-col gap-4">
 				<UserList users={users} />
 				<CreateUserForm />
