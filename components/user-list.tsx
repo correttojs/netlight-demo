@@ -6,11 +6,11 @@ import { useTransition } from "react";
 import { timeAgo } from "@/lib/utils";
 import { Trash2 } from "lucide-react";
 import useSWR from "swr";
-import { revalidateTag } from "next/cache";
+import { usersKey } from "./const";
 
 export function UserList({ users }: { users: User[] }) {
 	const [isPending, startTransition] = useTransition();
-	const swr = useSWR("/api/users", () => getUsers(), {
+	const swr = useSWR(usersKey, () => getUsers(), {
 		fallbackData: { users, duration: 0 },
 	});
 
@@ -39,7 +39,6 @@ export function UserList({ users }: { users: User[] }) {
 							onClick={() =>
 								startTransition(async () => {
 									await deleteUser(user.id);
-									// await revalidateTag("users");
 									swr.mutate();
 								})
 							}

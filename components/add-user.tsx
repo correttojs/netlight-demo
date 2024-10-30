@@ -4,6 +4,7 @@ import { createUser } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "./ui/input";
 import { useSWRConfig } from "swr";
+import { usersKey } from "./const";
 
 export function CreateUserForm() {
 	const swrConfig = useSWRConfig();
@@ -13,7 +14,7 @@ export function CreateUserForm() {
 		<form
 			action={async (data) => {
 				await formAction(data);
-				swrConfig.mutate("/api/users");
+				swrConfig.mutate(usersKey);
 			}}
 			className="flex flex-col gap-2"
 		>

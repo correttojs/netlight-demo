@@ -5,7 +5,9 @@ import { eq } from "drizzle-orm";
 import {
 	unstable_cacheTag as cacheTag,
 	unstable_cacheLife as cacheLife,
+	revalidateTag,
 } from "next/cache";
+import { usersKey } from "./const";
 
 export async function createUser(_: unknown, formData: FormData) {
 	try {
@@ -21,6 +23,7 @@ export async function createUser(_: unknown, formData: FormData) {
 				image: blob.url,
 			},
 		] as NewUser[]);
+		await revalidateTag(usersKey);
 	} catch {
 		return "Failed to create the user";
 	}
@@ -28,13 +31,15 @@ export async function createUser(_: unknown, formData: FormData) {
 
 export async function deleteUser(id: number) {
 	const res = await db.delete(UsersTable).where(eq(UsersTable.id, id));
+
+	await revalidateTag(usersKey);
 	console.log(res);
 }
 
 export async function getUsers() {
-	// "use cache";
+	"use cache";
 	// cacheLife("days");
-	// cacheTag("users");
+	cacheTag(usersKey);
 	const startTime = performance.now();
 	const users = await db.select().from(UsersTable);
 	await new Promise((resolve) => setTimeout(resolve, 500));
