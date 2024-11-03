@@ -2,8 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { reset } from "./actions";
 
-export default function RefreshButton() {
+export default function ResetButton() {
 	const router = useRouter();
 	const [isPending, startTransition] = useTransition();
 
@@ -14,13 +15,13 @@ export default function RefreshButton() {
 			} text-sm text-gray-500 hover:text-gray-900`}
 			disabled={isPending}
 			onClick={() => {
-				startTransition(() => {
-					router.refresh();
+				startTransition(async () => {
+					await reset();
 				});
 			}}
 			type="button"
 		>
-			{isPending ? "Refreshing..." : "Refresh"}
+			{isPending ? "Resetting..." : "Reset"}
 		</button>
 	);
 }

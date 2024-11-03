@@ -23,15 +23,20 @@ export function CreateUserForm() {
 				<label htmlFor="name">Name</label>
 				<Input type="text" name="name" />
 			</div>
-			<div className="flex flex-col gap-2">
-				<label htmlFor="email">Email</label>
-				<Input type="email" name="email" />
-			</div>
 
+			<div className="flex flex-col gap-2">
+				<label htmlFor="redCardsCoefficient">Red Cards Coefficient</label>
+				<Input type="number" step=".01" name="redCardsCoefficient" />
+			</div>
+			<div className="flex flex-col gap-2">
+				<label htmlFor="goalsCoefficient">Goals Coefficient</label>
+				<Input type="number" step=".01" name="goalsCoefficient" />
+			</div>
 			<div className="flex flex-col gap-2">
 				<label htmlFor="image">Image</label>
 				<Input name="image" type="file" required />
 			</div>
+
 			{state ? (
 				<div className="bg-red-800 text-white p-2 rounded">{state}</div>
 			) : null}

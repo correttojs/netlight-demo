@@ -20,8 +20,9 @@ export async function createUser(_: unknown, formData: FormData) {
 		const res = await db.insert(UsersTable).values([
 			{
 				name: formData.get("name"),
-				email: formData.get("email"),
 				image: blob.url,
+				goalsCoefficient: formData.get("goalsCoefficient"),
+				redCardsCoefficient: formData.get("redCardsCoefficient"),
 			},
 		] as NewUser[]);
 		await revalidateTag(usersKey);
@@ -51,3 +52,13 @@ export const getUsers = cache(async () => {
 		duration,
 	};
 });
+
+export async function reset() {
+	const res = await db.update(UsersTable).set({
+		goals: 0,
+		redCards: 0,
+	});
+
+	await revalidateTag(usersKey);
+	console.log(res);
+}
