@@ -17,9 +17,7 @@ export function UserList({ users }: { users: User[] }) {
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			revalidate().then(() => {
-				swr.mutate();
-			});
+			swr.mutate();
 		}, 5000);
 
 		return () => clearInterval(interval);
@@ -33,7 +31,7 @@ export function UserList({ users }: { users: User[] }) {
 				<p className="font-medium">Red Cards</p>
 				<p className="font-medium justify-self-end">Created</p>
 			</div>
-			{users.map((user) => (
+			{swr.data?.users.map((user) => (
 				<div
 					key={user.name}
 					className="grid grid-cols-[1fr_80px_80px_150px] items-center gap-4 py-3"
