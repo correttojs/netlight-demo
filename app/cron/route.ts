@@ -2,7 +2,7 @@ import { db, type NewUser, UsersTable } from "@/lib/drizzle";
 import { eq } from "drizzle-orm";
 
 export async function GET() {
-	console.timeLog("Updating scores");
+	console.log("Updating scores");
 	const players = await db.select().from(UsersTable);
 
 	const playerScores = players.map((player) => {
