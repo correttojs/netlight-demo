@@ -1,5 +1,7 @@
+import { usersKey } from "@/components/const";
 import { db, type NewUser, UsersTable } from "@/lib/drizzle";
 import { eq } from "drizzle-orm";
+import { revalidateTag } from "next/cache";
 
 export async function GET() {
 	console.log("Updating scores");
@@ -36,6 +38,8 @@ export async function GET() {
 				.where(eq(UsersTable.id, player.id)),
 		),
 	);
+
+	await revalidateTag(usersKey);
 
 	return new Response(JSON.stringify({ playerScores }));
 }

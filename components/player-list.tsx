@@ -1,7 +1,7 @@
 "use client";
 import type { User } from "@/lib/drizzle";
 import Image from "next/image";
-import { deleteUser, getUsers } from "./actions";
+import { deleteUser, getUsersNoCache, revalidate } from "./actions";
 import { useEffect, useTransition } from "react";
 import { useTimeAgo } from "@/lib/utils";
 import { Trash2 } from "lucide-react";
@@ -10,14 +10,16 @@ import { usersKey } from "./const";
 
 export function UserList({ users }: { users: User[] }) {
 	const [isPending, startTransition] = useTransition();
-	const swr = useSWR(usersKey, () => getUsers(), {
+	const swr = useSWR(usersKey, () => getUsersNoCache(), {
 		fallbackData: { users, duration: 0 },
 	});
 	const timeAgo = useTimeAgo();
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			swr.mutate();
+			revalidate().then(() => {
+				swr.mutate();
+			});
 		}, 5000);
 
 		return () => clearInterval(interval);

@@ -38,6 +38,10 @@ export async function deleteUser(id: number) {
 	console.log(res);
 }
 
+export async function revalidate() {
+	await revalidateTag(usersKey);
+}
+
 export const getUsers = cache(async () => {
 	// "use cache";
 	// cacheLife("days");
@@ -52,6 +56,18 @@ export const getUsers = cache(async () => {
 		duration,
 	};
 });
+
+export const getUsersNoCache = async () => {
+	console.log("getUsers no cache");
+	const startTime = performance.now();
+	const users = await db.select().from(UsersTable);
+	await new Promise((resolve) => setTimeout(resolve, 500));
+	const duration = performance.now() - startTime;
+	return {
+		users,
+		duration,
+	};
+};
 
 export async function reset() {
 	const res = await db.update(UsersTable).set({
