@@ -3,7 +3,7 @@ import { CreatePlayerForm } from "./create-player";
 import { getUsers } from "./actions";
 import { UserList } from "./player-list";
 import { PlayerCounter } from "./players-counter";
-import { alterTable } from "@/lib/migrations";
+import { alterTable, createTable } from "@/lib/migrations";
 import ResetButton from "./reset-button";
 
 export default async function Table() {

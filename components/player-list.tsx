@@ -2,7 +2,7 @@
 import type { User } from "@/lib/drizzle";
 import Image from "next/image";
 import { deleteUser, getUsers } from "./actions";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { useTimeAgo } from "@/lib/utils";
 import { Trash2 } from "lucide-react";
 import useSWR from "swr";
@@ -14,6 +14,14 @@ export function UserList({ users }: { users: User[] }) {
 		fallbackData: { users, duration: 0 },
 	});
 	const timeAgo = useTimeAgo();
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			swr.mutate();
+		}, 5000);
+
+		return () => clearInterval(interval);
+	}, [swr]);
 
 	return (
 		<div className="grid gap-2">

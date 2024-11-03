@@ -19,7 +19,7 @@ export const UsersTable = pgTable("users", {
 	goals: integer("goals"),
 	goalsCoefficient: decimal("goals_coefficient"),
 	image: text("image").notNull(),
-	createdAt: timestamp("createdAt").defaultNow().notNull(),
+	createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export type User = InferSelectModel<typeof UsersTable>;
