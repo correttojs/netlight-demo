@@ -1,10 +1,12 @@
 import RefreshButton from "./refresh-button";
 import { CreatePlayerForm } from "./create-player";
 import { getUsers } from "./actions";
-import { UserList } from "./player-list";
+import { PlayerList } from "./player-list";
 import { PlayerCounter } from "./players-counter";
 import { alterTable, createTable } from "@/lib/migrations";
 import ResetButton from "./reset-button";
+import { PlayerListBase } from "./player-list-base";
+import { CreatePlayerFormBase } from "./create-player-base";
 
 export default async function Table() {
 	const { users, duration } = await getUsers();
@@ -23,8 +25,8 @@ export default async function Table() {
 				<ResetButton />
 			</div>
 			<div className="flex flex-col gap-8">
-				<UserList users={users} />
-				<CreatePlayerForm />
+				<PlayerListBase users={users} />
+				<CreatePlayerFormBase />
 			</div>
 		</div>
 	);

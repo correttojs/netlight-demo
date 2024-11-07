@@ -1,27 +1,15 @@
 "use client";
 import type { User } from "@/lib/drizzle";
 import Image from "next/image";
-import { deleteUser, getUsersNoCache, revalidate } from "./actions";
-import { useEffect, useTransition } from "react";
+import { deleteUser } from "./actions";
+import { useTransition } from "react";
 import { useTimeAgo } from "@/lib/utils";
 import { Trash2 } from "lucide-react";
-import useSWR from "swr";
-import { usersKey } from "./const";
 
-export function PlayerList({ users }: { users: User[] }) {
+export function PlayerListBase({ users }: { users: User[] }) {
 	const [isPending, startTransition] = useTransition();
-	const swr = useSWR(usersKey, () => getUsersNoCache(), {
-		fallbackData: { users, duration: 0 },
-	});
+
 	const timeAgo = useTimeAgo();
-
-	useEffect(() => {
-		const interval = setInterval(() => {
-			swr.mutate();
-		}, 5000);
-
-		return () => clearInterval(interval);
-	}, [swr]);
 
 	return (
 		<div className="grid gap-2">
@@ -31,7 +19,7 @@ export function PlayerList({ users }: { users: User[] }) {
 				<p className="font-medium">Red Cards</p>
 				<p className="font-medium justify-self-end">Created</p>
 			</div>
-			{swr.data?.users.map((user) => (
+			{users.map((user) => (
 				<div
 					key={user.name}
 					className="grid grid-cols-[1fr_80px_80px_150px] items-center gap-4 py-3"
@@ -58,7 +46,6 @@ export function PlayerList({ users }: { users: User[] }) {
 							onClick={() =>
 								startTransition(async () => {
 									await deleteUser(user.id);
-									swr.mutate();
 								})
 							}
 							type="button"

@@ -25,7 +25,6 @@ export async function createUser(_: unknown, formData: FormData) {
 				redCardsCoefficient: formData.get("redCardsCoefficient"),
 			},
 		] as NewUser[]);
-		await revalidateTag(usersKey);
 	} catch {
 		return "Failed to create the user";
 	}
@@ -34,7 +33,6 @@ export async function createUser(_: unknown, formData: FormData) {
 export async function deleteUser(id: number) {
 	const res = await db.delete(UsersTable).where(eq(UsersTable.id, id));
 
-	await revalidateTag(usersKey);
 	console.log(res);
 }
 
@@ -75,6 +73,5 @@ export async function reset() {
 		redCards: 0,
 	});
 
-	await revalidateTag(usersKey);
 	console.log(res);
 }
