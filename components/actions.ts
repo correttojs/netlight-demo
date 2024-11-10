@@ -47,7 +47,7 @@ export const getUsers = cache(async () => {
 	console.log("getUsers");
 	const startTime = performance.now();
 	const users = await db.select().from(UsersTable);
-	await new Promise((resolve) => setTimeout(resolve, 500));
+	// await new Promise((resolve) => setTimeout(resolve, 500));
 	const duration = performance.now() - startTime;
 	return {
 		users,
