@@ -9,6 +9,7 @@ import {
 } from "next/cache";
 import { usersKey } from "./const";
 import { cache } from "react";
+import { seedPlayers } from "@/lib/migrations";
 
 export async function createUser(_: unknown, formData: FormData) {
 	try {
@@ -41,18 +42,34 @@ export async function revalidate() {
 }
 
 export const getUsers = cache(async () => {
-	// "use cache";
-	// cacheLife("days");
-	// cacheTag(usersKey);
-	console.log("getUsers");
-	const startTime = performance.now();
-	const users = await db.select().from(UsersTable);
-	// await new Promise((resolve) => setTimeout(resolve, 500));
-	const duration = performance.now() - startTime;
-	return {
-		users,
-		duration,
-	};
+	try {
+		// "use cache";
+		// cacheLife("days");
+		// cacheTag(usersKey);
+		console.log("getUsers");
+		const startTime = performance.now();
+		const users = await db.select().from(UsersTable);
+		// await new Promise((resolve) => setTimeout(resolve, 500));
+		const duration = performance.now() - startTime;
+		return {
+			users,
+			duration,
+		};
+	} catch (e) {
+		if (e instanceof Error && e.message === 'relation "users" does not exist') {
+			console.log("table not found");
+			await seedPlayers();
+			const startTime = performance.now();
+			const users = await db.select().from(UsersTable);
+			// await new Promise((resolve) => setTimeout(resolve, 500));
+			const duration = performance.now() - startTime;
+			return {
+				users,
+				duration,
+			};
+		}
+		throw e;
+	}
 });
 
 export const getUsersNoCache = async () => {
