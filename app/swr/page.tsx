@@ -2,8 +2,8 @@ import { Suspense } from "react";
 import Placeholders from "@/components/placeholders";
 import { PlayerListSWR } from "@/components/use-swr/player-list";
 import { CreatePlayerSWR } from "@/components/use-swr/create-player";
-import { getOrSeedPlayers } from "@/components/common-actions";
 import { PlayerCounterSWR } from "@/components/use-swr/players-counter";
+import { getPlayersUseCache } from "@/components/use-cache/actions";
 
 export default function UseSWR() {
 	return (
@@ -14,7 +14,7 @@ export default function UseSWR() {
 }
 
 async function PlayersSSR() {
-	const { players } = await getOrSeedPlayers();
+	const { players } = await getPlayersUseCache();
 	return (
 		<>
 			<PlayerCounterSWR />
