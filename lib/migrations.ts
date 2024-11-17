@@ -4,11 +4,11 @@ import { sql } from "@vercel/postgres";
 export async function alterTable() {
 	// Add integer columns with raw SQL
 	const alterTable = await sql.query(`
-      ALTER TABLE users 
+      ALTER TABLE players 
       ADD COLUMN redcards_coefficient FLOAT,
       ADD COLUMN goals_coefficient FLOAT;
   `);
-	console.log(`Added redCards and goals columns to "users" table`);
+	console.log(`Added redCards and goals columns to "players" table`);
 
 	return {
 		alterTable,
@@ -16,9 +16,9 @@ export async function alterTable() {
 }
 
 export async function createTable() {
-	await sql.query("DROP TABLE IF EXISTS users");
+	await sql.query("DROP TABLE IF EXISTS players");
 	const createTable = await sql.query(`
-    CREATE TABLE IF NOT EXISTS users (
+    CREATE TABLE IF NOT EXISTS players (
       id SERIAL PRIMARY KEY,
       name VARCHAR(255) NOT NULL UNIQUE,
       goals INTEGER DEFAULT 0,
@@ -29,7 +29,7 @@ export async function createTable() {
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
   `);
-	console.log(`Created "users" table`);
+	console.log(`Created "players" table`);
 
 	return {
 		createTable,
@@ -45,7 +45,7 @@ async function createPlayer(
 	image: string,
 ) {
 	await sql.query(
-		`INSERT INTO users (name, goals, redcards, redcards_coefficient, goals_coefficient, image)
+		`INSERT INTO players (name, goals, redcards, redcards_coefficient, goals_coefficient, image)
          VALUES ($1, $2, $3, $4, $5, $6)`,
 		[
 			name,
@@ -61,7 +61,9 @@ async function createPlayer(
 export async function seedPlayers() {
 	try {
 		await createTable();
-	} catch {}
+	} catch (e) {
+		console.log(e);
+	}
 	try {
 		await createPlayer("Lionel Messi", 800, 0, 0.0, 1.2, "messi.jpg");
 		await createPlayer("Cristiano Ronaldo", 850, 11, 0.2, 1.1, "ronaldo.jpg");

@@ -4,14 +4,10 @@ const VERCEL_BLOB_STORE_ID = process.env.BLOB_READ_WRITE_TOKEN?.match(
 )?.[1].toLowerCase();
 const nextConfig: NextConfig = {
 	images: {
-		domains: [
-			"images.ctfassets.net",
-			`${VERCEL_BLOB_STORE_ID}.public.blob.vercel-storage.com`,
-		],
+		domains: [`${VERCEL_BLOB_STORE_ID}.public.blob.vercel-storage.com`],
 	},
 	experimental: {
 		dynamicIO: true,
-		ppr: "incremental",
 	},
 };
 

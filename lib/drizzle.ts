@@ -10,7 +10,7 @@ import type { InferSelectModel, InferInsertModel } from "drizzle-orm";
 import { sql } from "@vercel/postgres";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 
-export const PlayersTable = pgTable("users", {
+export const PlayersTable = pgTable("players", {
 	id: serial("id").primaryKey(),
 	name: text("name").notNull(),
 	redCards: integer("redcards"),

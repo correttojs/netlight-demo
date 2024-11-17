@@ -33,12 +33,17 @@ export async function deleteUser(id: number) {
 
 export const getOrSeedPlayers = React.cache(async () => {
 	try {
-		return getPlayersRaw();
+		const res = await getPlayersRaw();
+		return res;
 	} catch (e) {
-		if (e instanceof Error && e.message === 'relation "users" does not exist') {
+		if (
+			e instanceof Error &&
+			e.message === 'relation "players" does not exist'
+		) {
 			console.log("table not found");
 			await seedPlayers();
-			return getPlayersRaw();
+			const res = await getPlayersRaw();
+			return res;
 		}
 		throw e;
 	}
@@ -46,7 +51,7 @@ export const getOrSeedPlayers = React.cache(async () => {
 
 export type GetPlayersResponse = Awaited<ReturnType<typeof getOrSeedPlayers>>;
 
-const getPlayersRaw = React.cache(async () => {
+const getPlayersRaw = async () => {
 	const startTime = performance.now();
 	await new Promise((resolve) => setTimeout(resolve, 500));
 	const players = await db
@@ -58,7 +63,7 @@ const getPlayersRaw = React.cache(async () => {
 		players,
 		duration,
 	};
-});
+};
 
 export async function reset() {
 	const res = await db.update(PlayersTable).set({
