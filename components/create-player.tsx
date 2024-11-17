@@ -1,20 +1,19 @@
 "use client";
 import { useActionState } from "react";
-import { createUser } from "./actions";
+import { createUser } from "./common-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "./ui/input";
-import { useSWRConfig } from "swr";
-import { usersKey } from "./const";
 
-export function CreatePlayerForm() {
-	const swrConfig = useSWRConfig();
+export function CreatePlayerBase({
+	onCreated,
+}: { onCreated: () => Promise<void> }) {
 	const [state, formAction, isPending] = useActionState(createUser, null);
 
 	return (
 		<form
 			action={async (data) => {
 				await formAction(data);
-				swrConfig.mutate(usersKey);
+				await onCreated();
 			}}
 			className="flex flex-col gap-2 border-t border-gray-900/5 pt-4"
 		>

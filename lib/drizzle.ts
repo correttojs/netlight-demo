@@ -4,14 +4,13 @@ import {
 	text,
 	integer,
 	timestamp,
-	uniqueIndex,
 	decimal,
 } from "drizzle-orm/pg-core";
 import type { InferSelectModel, InferInsertModel } from "drizzle-orm";
 import { sql } from "@vercel/postgres";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 
-export const UsersTable = pgTable("users", {
+export const PlayersTable = pgTable("users", {
 	id: serial("id").primaryKey(),
 	name: text("name").notNull(),
 	redCards: integer("redcards"),
@@ -22,8 +21,8 @@ export const UsersTable = pgTable("users", {
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export type User = InferSelectModel<typeof UsersTable>;
-export type NewUser = InferInsertModel<typeof UsersTable>;
+export type Player = InferSelectModel<typeof PlayersTable>;
+export type NewPlayer = InferInsertModel<typeof PlayersTable>;
 
 // Connect to Vercel Postgres
 export const db = drizzle(sql);

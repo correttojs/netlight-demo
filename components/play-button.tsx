@@ -1,27 +1,29 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { reset } from "./common-actions";
+import { playMatch } from "./common-actions";
+import { Play } from "lucide-react";
 
-export default function ResetButton() {
-	const router = useRouter();
+export default function PlayButton({
+	onPlayed,
+}: { onPlayed: () => Promise<unknown> }) {
 	const [isPending, startTransition] = useTransition();
 
 	return (
 		<button
-			className={`${
+			className={`flex flex-row gap-2 items-center ${
 				isPending ? "cursor-not-allowed text-gray-400" : ""
 			} text-sm text-gray-500 hover:text-gray-900`}
 			disabled={isPending}
 			onClick={() => {
 				startTransition(async () => {
-					await reset();
+					await playMatch();
+					await onPlayed();
 				});
 			}}
 			type="button"
 		>
-			{isPending ? "Resetting..." : "Reset"}
+			<Play /> {isPending ? "Playing..." : "Play"}
 		</button>
 	);
 }
