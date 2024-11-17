@@ -7,7 +7,7 @@ export function PlayerListBase({
 	onRemoved,
 }: { players: Player[]; onRemoved: () => Promise<unknown> }) {
 	return (
-		<div className="grid gap-2">
+		<div className="grid gap-2 pt-4">
 			<div className="grid grid-cols-[1fr_80px_80px_150px] items-center gap-4 pb-2 border-b border-gray-900/5">
 				<p className="font-medium">Name</p>
 				<p className="font-medium">Goals</p>
