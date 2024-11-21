@@ -11,6 +11,10 @@ export function PlayerCounterSWR() {
 	return (
 		<div className="flex flex-row gap-2 items-center">
 			<PlayButton onPlayed={() => swr.mutate()} />
+			<div className="flex flex-row gap-2 items-center">
+				<PlayButton onPlayed={() => Promise.resolve()} />
+				without mutate
+			</div>
 			<div className="text-sm text-gray-500">
 				Fetched {swr.data?.players.length} players in{" "}
 				{Math.round(swr.data?.duration ?? 0)}ms

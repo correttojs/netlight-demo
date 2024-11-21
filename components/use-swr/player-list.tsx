@@ -11,16 +11,9 @@ export function PlayerListSWR({ players }: { players: Player[] }) {
 		(key) => fetch(key).then((res) => res.json()),
 		{
 			fallbackData: { players, duration: 0 },
+			refreshInterval: 5000,
 		},
 	);
-
-	// useEffect(() => {
-	// 	const interval = setInterval(() => {
-	// 		swr.mutate();
-	// 	}, 5000);
-
-	// 	return () => clearInterval(interval);
-	// }, [swr]);
 
 	if (!swr.data) return null;
 
